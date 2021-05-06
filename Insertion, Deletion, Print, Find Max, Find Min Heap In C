@@ -1,0 +1,197 @@
+Hello world heap problem solution solved by Md. Asif Imtiyaj Chowdhury.
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int size = 1;
+int array[100];
+
+void swapElement(int *ele1, int *ele2)
+{
+    int *temp;
+    *temp = *ele2;
+    *ele2 = *ele1;
+    *ele1 = *temp;
+}
+
+void createHeap(int array[], int size, int i)
+{
+    if(size == 1)
+    {
+        printf("There is a single element in the heap.\n");
+    }
+    else
+    {
+        int parent = i;
+        int leftChild = 2 * i + 1;
+        int rightChild = 2 * i + 2;
+
+        if(leftChild < size && array[leftChild] > array[parent])
+        {
+            parent = leftChild;
+        }
+        if(rightChild < size && array[rightChild] > array[parent])
+        {
+            parent = rightChild;
+        }
+        if(parent != i)
+        {
+            swapElement(&array[i], &array[parent]);
+            /*int temp = array[largest];
+            array[largest] = array[i];
+            array[i] = temp;*/
+
+            createHeap(array, size, parent);
+        }
+    }
+    return;
+}
+
+void insertion(int array[], int newEle)
+{
+    if(size == 1)
+    {
+        array[size] = newEle;
+        size += 1;
+    }
+    else
+    {
+        array[size] = newEle;
+        size += 1;
+
+        for(int i = size/2-1; i>=1; i--)
+        {
+            createHeap(array, size, i);
+        }
+    }
+}
+
+void deletion(int array[], int size)
+{
+    int firstAdd = 1;
+    int lastAdd = size;
+
+    array[firstAdd] = array[lastAdd];
+    size -= 1;
+
+    createHeap(array, size, firstAdd);
+}
+
+/*void deletion(int array[], int ele)
+{
+    for(int i=0; i<size; i++)
+    {
+        if(ele == array[i]);
+            break;
+    }
+    swapElement(&array[i], &array[size - 1]);
+    size -= 1;
+    for(int i=size/2-1; i>=0; i--)
+    {
+        createHeap(array, size, i);
+    }
+}*/
+
+void maxHeap(int array[], int size)
+{
+    int Address = 0;
+    for(int i=1; i<size; i++)
+    {
+        if(array[i] > array[Address])
+        {
+            //array[i] = array[Address];
+            array[Address] = array[i];
+        }
+    }
+    printf("\nMax Element From The Heap: %d\n", array[Address]);
+}
+
+void minHeap(int array[], int size)
+{
+    int Address = 0;
+    for(int i=1; i<=size; i++)
+    {
+        if(array[i] < array[Address])
+        {
+            array[Address] = array[i];
+        }
+    }
+    printf("\nMin Element From The Heap: %d\n", array[Address]);
+}
+
+void printHeap(int array[], int size)
+{
+    for(int i=0; i<=size; ++i)
+    {
+        printf("%d ", array[i]);
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int choice, data;
+    int array[100], temp;
+
+    while(1)
+    {
+        printf("-------------------------------------------------------------------\n");
+        printf("                         WELCOME TO HEAP                           \n");
+        printf("-------------------------------------------------------------------\n");
+        printf("1. Insertion\n");
+        printf("2. Deletion\n");
+        printf("3. Print Heap Size\n");
+        printf("4. Find Max Element From Heap\n");
+        printf("5. Find Min Element From Heap\n");
+        printf("6. Exit!!!\n");
+        printf("-------------------------------------------------------------------\n");
+
+        printf("\nEnter Your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+
+                printf("\nEnter Data For Insertion: ");
+                scanf("%d", &data);
+                insertion(array, data);
+                break;
+
+            case 2:
+                printf("\nEnter Data To Delete an Element in Heap: ");
+                scanf("%d", &data);
+                if(data = 0)
+                {
+                    printf("\nNot found the desired element!\n");
+                }
+                else
+                {
+                    size -= 1;
+                    deletion(array, size);
+                    printf("\nRoot Item Is Successfully Deleted From The Heap!!\n");
+                }
+                break;
+
+            case 3:
+                printf("\nItems in Heap...\n");
+                printHeap(array, size);
+                break;
+
+            case 4:
+                maxHeap(array, size);
+                break;
+
+            case 5:
+                minHeap(array, size);
+                break;
+
+            case 6:
+                printf("\nExit From the Terminal!!!\n");
+                exit(0);
+
+            default:
+                printf("\nInvalid Choice!\n");
+        }
+    }
+}
